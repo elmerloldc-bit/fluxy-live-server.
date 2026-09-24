@@ -19,7 +19,7 @@ const activeStreams = {};
 io.on('connection', (socket) => {
   console.log('✅ Nuevo cliente conectado:', socket.id);
 
-  // La App de escritorio del streamer avisa cada 3 segundos cuántos viewers tiene
+  // La App de escritorio del streamer avisa cada 8 segundos cuántos viewers tiene
   socket.on('update_viewers', (data) => {
     // data esperado: { hwid: '123', nickname: 'Elmerciot', viewers: 1500, game: 'Mario 64' }
     if (!data.hwid) return;
@@ -39,13 +39,13 @@ io.on('connection', (socket) => {
   });
 });
 
-// 🧹 Limpieza automática: Si un streamer no envía datos por 10 segundos, lo borramos de la lista
+// 🧹 Limpieza automática: Si un streamer no envía datos por 30 segundos, lo borramos de la lista
 setInterval(() => {
   const now = Date.now();
   let changed = false;
   
   for (const hwid in activeStreams) {
-    if (now - activeStreams[hwid].lastUpdate > 10000) {
+    if (now - activeStreams[hwid].lastUpdate > 30000) {
       delete activeStreams[hwid];
       changed = true;
     }
